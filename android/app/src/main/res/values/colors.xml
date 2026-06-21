@@ -1,0 +1,4 @@
+<resources>
+    <!-- Matches ui/theme/Color.kt's "bg" token -->
+    <color name="window_background">#FCFAF2</color>
+</resources>

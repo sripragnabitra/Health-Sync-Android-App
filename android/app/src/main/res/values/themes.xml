@@ -1,0 +1,10 @@
+<resources>
+    <!-- The actual color scheme lives in Kotlin (ui/theme/Theme.kt) via
+         Material3's Compose theming — this base theme just sets the
+         window background before Compose takes over, avoiding a white
+         flash on cold start. -->
+    <style name="Theme.HealthSync" parent="android:Theme.Material.Light.NoActionBar">
+        <item name="android:windowBackground">@color/window_background</item>
+        <item name="android:statusBarColor">@color/window_background</item>
+    </style>
+</resources>

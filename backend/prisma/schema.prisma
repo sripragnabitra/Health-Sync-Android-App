@@ -1,0 +1,161 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Platform {
+  ANDROID
+  IOS
+}
+
+enum ParameterType {
+  STEPS
+  DISTANCE_METERS
+  ACTIVE_CALORIES
+  HEART_RATE
+  SLEEP_DURATION
+}
+
+enum SyncTrigger {
+  MANUAL
+  SCHEDULED
+}
+
+enum SyncStatus {
+  PENDING
+  RUNNING
+  SUCCESS
+  FAILED
+}
+
+model User {
+  id           String   @id @default(uuid())
+  email        String   @unique
+  passwordHash String   @map("password_hash")
+  fullName     String?  @map("full_name")
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  devices         Device[]
+  healthRecords   HealthRecord[]
+  dailySummaries  DailyHealthSummary[]
+  syncJobs        SyncJob[]
+
+  @@map("users")
+}
+
+model Device {
+  id             String    @id @default(uuid())
+  userId         String    @map("user_id")
+  // Generated once on-device (persisted in DataStore) and resent on every
+  // call. This is what makes device registration idempotent — reinstalling
+  // the app updates the same row instead of creating a duplicate.
+  clientDeviceId String    @map("client_device_id")
+  platform       Platform  @default(ANDROID)
+  deviceModel    String?   @map("device_model")
+  osVersion      String?   @map("os_version")
+  appVersion     String?   @map("app_version")
+  lastSeenAt     DateTime? @map("last_seen_at")
+  createdAt      DateTime  @default(now()) @map("created_at")
+
+  user          User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  healthRecords HealthRecord[]
+  syncJobs      SyncJob[]
+
+  @@unique([userId, clientDeviceId])
+  @@index([userId])
+  @@map("devices")
+}
+
+model HealthRecord {
+  id              String        @id @default(uuid())
+  userId          String        @map("user_id")
+  deviceId        String        @map("device_id")
+  syncJobId       String?       @map("sync_job_id")
+  parameterType   ParameterType @map("parameter_type")
+  value           Decimal       @db.Decimal(12, 4)
+  unit            String
+  recordedAt      DateTime      @map("recorded_at")
+  // Only set for ranged readings (a sleep session has a start and end;
+  // a step count or heart-rate sample is a single instant).
+  recordedEndAt   DateTime?     @map("recorded_end_at")
+  // The calendar day this reading counts toward, as decided by the phone
+  // at read time — see ASSUMPTIONS.md for why this isn't derived from
+  // recordedAt server-side.
+  localDate       DateTime      @map("local_date") @db.Date
+  // Health Connect's own record UUID. The unique constraint below on
+  // (userId, sourceRecordId) is the actual idempotency guarantee — see
+  // sync.service.ts and core/dedupe.ts.
+  sourceRecordId  String        @map("source_record_id")
+  createdAt       DateTime      @default(now()) @map("created_at")
+
+  user    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  device  Device   @relation(fields: [deviceId], references: [id], onDelete: Cascade)
+  syncJob SyncJob? @relation(fields: [syncJobId], references: [id], onDelete: SetNull)
+
+  @@unique([userId, sourceRecordId])
+  @@index([userId, parameterType, localDate])
+  @@index([userId, parameterType, recordedAt])
+  @@map("health_records")
+}
+
+model DailyHealthSummary {
+  id            String        @id @default(uuid())
+  userId        String        @map("user_id")
+  summaryDate   DateTime      @map("summary_date") @db.Date
+  parameterType ParameterType @map("parameter_type")
+  unit          String
+  // null for HEART_RATE — see core/aggregation.ts: summing bpm readings
+  // across a day is physically meaningless, so only avg/min/max apply.
+  totalValue    Decimal?      @map("total_value") @db.Decimal(12, 4)
+  avgValue      Decimal?      @map("avg_value") @db.Decimal(12, 4)
+  minValue      Decimal?      @map("min_value") @db.Decimal(12, 4)
+  maxValue      Decimal?      @map("max_value") @db.Decimal(12, 4)
+  recordCount   Int           @default(0) @map("record_count")
+  updatedAt     DateTime      @updatedAt @map("updated_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, summaryDate, parameterType])
+  @@index([userId, parameterType, summaryDate])
+  @@map("daily_health_summaries")
+}
+
+model SyncJob {
+  id              String      @id @default(uuid())
+  userId          String      @map("user_id")
+  deviceId        String      @map("device_id")
+  status          SyncStatus  @default(PENDING)
+  trigger         SyncTrigger @default(MANUAL)
+  recordsReceived Int         @default(0) @map("records_received")
+  recordsInserted Int         @default(0) @map("records_inserted")
+  recordsSkipped  Int         @default(0) @map("records_skipped")
+  startedAt       DateTime    @default(now()) @map("started_at")
+  completedAt     DateTime?   @map("completed_at")
+
+  user          User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  device        Device         @relation(fields: [deviceId], references: [id], onDelete: Cascade)
+  errors        SyncError[]
+  healthRecords HealthRecord[]
+
+  @@index([userId, startedAt])
+  @@map("sync_jobs")
+}
+
+model SyncError {
+  id         String   @id @default(uuid())
+  syncJobId  String   @map("sync_job_id")
+  errorCode  String   @map("error_code")
+  message    String
+  context    Json?
+  occurredAt DateTime @default(now()) @map("occurred_at")
+
+  syncJob SyncJob @relation(fields: [syncJobId], references: [id], onDelete: Cascade)
+
+  @@index([syncJobId])
+  @@map("sync_errors")
+}

@@ -1,0 +1,44 @@
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# Build outputs
+backend/dist/
+web/.next/
+android/app/build/
+android/build/
+android/.gradle/
+android/local.properties
+android/app/release/
+android/app/debug/
+
+# Environment files (never commit real secrets)
+.env
+.env.local
+.env*.local
+!.env.example
+!.env.local.example
+
+# Logs
+*.log
+npm-debug.log*
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.iml
+
+# Android Studio / Gradle
+.gradle/
+*.apk
+*.aab
+captures/
+.cxx/
+
+# Misc
+*.tsbuildinfo
