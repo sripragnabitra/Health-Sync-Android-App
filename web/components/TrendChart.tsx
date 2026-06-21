@@ -48,6 +48,13 @@ export function TrendChart({
     hasData: p.hasData,
   }));
 
+  // With up to ~30 daily bars (Last Month), labeling every single tick
+  // crowds and overlaps. Angle the labels and skip some when there are
+  // more than ~10 points — Recharts' "preserveStartEnd" plus a manual
+  // interval keeps the first/last visible and thins the rest evenly.
+  const isDense = data.length > 10;
+  const tickInterval = isDense ? Math.ceil(data.length / 10) : 0;
+
   return (
     <div className="rounded-card border border-border bg-surface p-5">
       {/* Header row: title + period description */}
@@ -81,30 +88,48 @@ export function TrendChart({
           No synced data for this period yet.
         </div>
       ) : isHeartRate ? (
-        <ResponsiveContainer width="100%" height={240}>
-          <LineChart data={data} margin={{ top: 8, right: 8, left: 0, bottom: 0 }}>
+        <ResponsiveContainer width="100%" height={isDense ? 270 : 240}>
+          <LineChart data={data} margin={{ top: 8, right: 8, left: 0, bottom: isDense ? 24 : 0 }}>
             <CartesianGrid strokeDasharray="3 3" stroke="#E8DFC8" vertical={false} />
-            <XAxis dataKey="label" tick={{ fontSize: 12, fill: "#67617F" }} axisLine={{ stroke: "#DCD3BE" }} tickLine={false} />
+            <XAxis
+              dataKey="label"
+              tick={{ fontSize: 11, fill: "#67617F" }}
+              axisLine={{ stroke: "#DCD3BE" }}
+              tickLine={false}
+              interval={tickInterval}
+              angle={isDense ? -40 : 0}
+              textAnchor={isDense ? "end" : "middle"}
+              height={isDense ? 44 : 24}
+            />
             <YAxis tick={{ fontSize: 12, fill: "#67617F" }} axisLine={false} tickLine={false} width={36} />
             <Tooltip
               formatter={(v: number) => [formatValueForDisplay(parameterType, v), "Avg bpm"]}
               contentStyle={{ borderRadius: 10, border: "1px solid #DCD3BE", fontSize: 13 }}
             />
             <Line type="monotone" dataKey="value" stroke={PRIMARY} strokeWidth={2}
-              dot={{ r: 3, fill: PRIMARY }} connectNulls={false} />
+              dot={{ r: isDense ? 2 : 3, fill: PRIMARY }} connectNulls={false} />
           </LineChart>
         </ResponsiveContainer>
       ) : (
-        <ResponsiveContainer width="100%" height={240}>
-          <BarChart data={data} margin={{ top: 8, right: 8, left: 0, bottom: 0 }}>
+        <ResponsiveContainer width="100%" height={isDense ? 270 : 240}>
+          <BarChart data={data} margin={{ top: 8, right: 8, left: 0, bottom: isDense ? 24 : 0 }}>
             <CartesianGrid strokeDasharray="3 3" stroke="#E8DFC8" vertical={false} />
-            <XAxis dataKey="label" tick={{ fontSize: 12, fill: "#67617F" }} axisLine={{ stroke: "#DCD3BE" }} tickLine={false} />
+            <XAxis
+              dataKey="label"
+              tick={{ fontSize: 11, fill: "#67617F" }}
+              axisLine={{ stroke: "#DCD3BE" }}
+              tickLine={false}
+              interval={tickInterval}
+              angle={isDense ? -40 : 0}
+              textAnchor={isDense ? "end" : "middle"}
+              height={isDense ? 44 : 24}
+            />
             <YAxis tick={{ fontSize: 12, fill: "#67617F" }} axisLine={false} tickLine={false} width={42} />
             <Tooltip
               formatter={(v: number) => [formatValueForDisplay(parameterType, v), "Total"]}
               contentStyle={{ borderRadius: 10, border: "1px solid #DCD3BE", fontSize: 13 }}
             />
-            <Bar dataKey="value" fill={AMBER} radius={[4, 4, 0, 0]} maxBarSize={40} />
+            <Bar dataKey="value" fill={AMBER} radius={[4, 4, 0, 0]} maxBarSize={isDense ? 18 : 40} />
           </BarChart>
         </ResponsiveContainer>
       )}

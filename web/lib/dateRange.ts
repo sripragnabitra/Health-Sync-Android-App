@@ -4,7 +4,7 @@
  * this single selection. No separate granularity/preset pickers needed.
  */
 
-export type DateRangePeriod = "yesterday" | "last_week" | "last_month";
+export type DateRangePeriod = "today" | "yesterday" | "last_week" | "last_month";
 
 export interface DateRangeConfig {
   period: DateRangePeriod;
@@ -29,6 +29,12 @@ export function buildDateRangeConfig(period: DateRangePeriod): DateRangeConfig {
   yesterday.setDate(yesterday.getDate() - 1);
 
   switch (period) {
+    case "today": {
+      const t = toISODate(today);
+      return { period, label: "Today", description: "Showing today's data so far",
+        granularity: "daily", from: t, to: t };
+    }
+    
     case "yesterday": {
       const from = toISODate(yesterday);
       const to = toISODate(yesterday);
@@ -51,7 +57,7 @@ export function buildDateRangeConfig(period: DateRangePeriod): DateRangeConfig {
         description: `Showing daily breakdown for the last 7 days`,
         granularity: "daily",
         from: toISODate(from),
-        to: toISODate(yesterday),
+        to: toISODate(today),
       };
     }
 
@@ -61,10 +67,10 @@ export function buildDateRangeConfig(period: DateRangePeriod): DateRangeConfig {
       return {
         period,
         label: "Last Month",
-        description: `Showing weekly breakdown for the last 30 days`,
-        granularity: "weekly",
+        description: `Showing daily breakdown for the last 30 days`,
+        granularity: "daily",
         from: toISODate(from),
-        to: toISODate(yesterday),
+        to: toISODate(today),
       };
     }
   }

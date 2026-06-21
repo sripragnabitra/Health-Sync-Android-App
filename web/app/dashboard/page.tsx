@@ -39,7 +39,7 @@ export default function DashboardPage() {
   const router = useRouter();
 
   // Top-level period selector — drives cards + chart
-  const [period, setPeriod] = useState<DateRangePeriod>("last_week");
+  const [period, setPeriod] = useState<DateRangePeriod>("today");
 
   // Data state
   const [summaryData, setSummaryData] = useState<TrendResponse[]>([]);   // one per parameter, for the cards
@@ -79,22 +79,34 @@ export default function DashboardPage() {
 
       setLatestMetrics(latest);
       setSyncStatus(status);
-      setSummaryData(paramTrends.filter(Boolean) as TrendResponse[]);
+      const trends = paramTrends.filter(Boolean) as TrendResponse[];
+      setSummaryData(trends);
 
-      // Sparklines always use last 7 days daily regardless of period selection
-      const sparklineFrom = dayAgo(7);
-      const sparklineTo = today();
-      const sparklineResults = await Promise.all(
-        CARDS.map((c) =>
-          api.getTrend(c.type, "daily", sparklineFrom, sparklineTo).catch(() => null)
-        )
-      );
+      // Sparklines want the last 7 daily points per parameter. If the
+      // card data we just fetched is ALREADY daily-granularity and covers
+      // at least 7 days (true for "last_week", our default), reuse it
+      // directly instead of firing a second full round of 5 requests.
+      // Only "yesterday" (too short a range) and "last_month" (weekly
+      // buckets, not daily) still need a separate fetch.
+      const canReuseForSparklines = cfg.granularity === "daily" && trends.some((t) => t.points.length >= 7);
+
+      let sparklineSource: TrendResponse[];
+      if (canReuseForSparklines) {
+        sparklineSource = trends.map((t) => ({ ...t, points: t.points.slice(-7) }));
+      } else {
+        const sparklineFrom = dayAgo(7);
+        const sparklineTo = today();
+        const results = await Promise.all(
+          CARDS.map((c) => api.getTrend(c.type, "daily", sparklineFrom, sparklineTo).catch(() => null))
+        );
+        sparklineSource = results.filter(Boolean) as TrendResponse[];
+      }
+
       const next: Record<ParameterType, number[]> = {} as Record<ParameterType, number[]>;
-      sparklineResults.forEach((t, i) => {
-        if (!t) return;
-        next[CARDS[i].type] = t.points
+      sparklineSource.forEach((t) => {
+        next[t.parameterType] = t.points
           .filter((p) => p.hasData)
-          .map((p) => (CARDS[i].type === "HEART_RATE" ? p.avgValue : p.totalValue) ?? 0);
+          .map((p) => (t.parameterType === "HEART_RATE" ? p.avgValue : p.totalValue) ?? 0);
       });
       setSparklines(next);
     } catch (err) {

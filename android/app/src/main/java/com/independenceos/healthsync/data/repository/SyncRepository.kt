@@ -29,6 +29,9 @@ class SyncRepository(
      * directly and overrides the automatic default.
      */
     suspend fun performSync(trigger: String, lookbackDays: Long? = null): SyncOutcome {
+        if (!healthConnectManager.hasAllRequiredPermissions()) {
+            return SyncOutcome.Failure("Health Sync no longer has permission to read your health data. Please re-grant access in Health Connect.")
+        }
         val deviceResult = deviceRepository.ensureRegistered()
         val deviceId = deviceResult.getOrElse { return SyncOutcome.Failure(it.toUserMessage()) }
 

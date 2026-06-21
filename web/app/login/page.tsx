@@ -8,7 +8,7 @@ import { api, ApiError } from "@/lib/api";
 
 export default function LoginPage() {
   const [mode, setMode] = useState<"login" | "signup">("login");
-  const [email, setEmail] = useState("demo@independenceos.ai");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [fullName, setFullName] = useState("");
   const [error, setError] = useState<string | null>(null);
@@ -77,6 +77,7 @@ export default function LoginPage() {
               type="email"
               required
               value={email}
+              placeholder="you@example.com"
               onChange={(e) => setEmail(e.target.value)}
               className="w-full rounded-lg border border-border bg-bg px-3 py-2 text-[14px] text-ink outline-none focus:border-ink"
             />
@@ -93,8 +94,6 @@ export default function LoginPage() {
               className="w-full rounded-lg border border-border bg-bg px-3 py-2 text-[14px] text-ink outline-none focus:border-ink"
             />
           </label>
-
-          {mode === "login" && <p className="mb-3 text-[12px] text-ink-muted">Seeded demo password: DemoPass123!</p>}
 
           {error && (
             <p className="mt-3 rounded-lg border border-denial-bd bg-denial-bg px-3 py-2 text-[13px] text-denial-fg">{error}</p>

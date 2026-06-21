@@ -1,6 +1,6 @@
 # Deployment Guide
 
-Goal: anyone — you, an interviewer, anyone — can install the Android app,
+Goal: anyone can install the Health sync Android app,
 sign in, grant Health Connect permissions, tap **Sync Now**, then open a
 website URL and see the stats. No laptop, no WiFi matching, no IP
 configuration required by whoever's using it.

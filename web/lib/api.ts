@@ -26,20 +26,45 @@ function getToken(): string | null {
 
 async function request<T>(path: string, options: RequestInit = {}): Promise<T> {
   const token = getToken();
-  const res = await fetch(`${BASE_URL}${path}`, {
-    ...options,
-    headers: {
-      "Content-Type": "application/json",
-      ...(token ? { Authorization: `Bearer ${token}` } : {}),
-      ...options.headers,
-    },
-  });
+  let res: Response;
+  try {
+    res = await fetch(`${BASE_URL}${path}`, {
+      ...options,
+      headers: {
+        "Content-Type": "application/json",
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        ...options.headers,
+      },
+    });
+  } catch {
+    // fetch() throws (not a rejected HTTP response) when the network
+    // itself fails — server down, no internet, DNS failure, etc.
+    throw new ApiError("Can't reach the server right now. Please try again in a moment.", "NETWORK_ERROR", 0);
+  }
 
   const body = await res.json().catch(() => null);
 
   if (!res.ok) {
-    const message = body?.error?.message ?? `Request failed with status ${res.status}`;
+    let message = body?.error?.message ?? `Request failed with status ${res.status}`;
     const code = body?.error?.code ?? "UNKNOWN_ERROR";
+    // For validation errors, the backend's "Request validation failed" is
+    // generic on purpose (covers many possible bad fields) — but it also
+    // sends which specific field(s) failed in `details.fieldErrors`. Surface
+    // the first real one so the user sees "email: Invalid email" instead of
+    // just "Request validation failed".
+    if (code === "VALIDATION_ERROR" && body?.error?.details?.fieldErrors) {
+      const fieldErrors = body.error.details.fieldErrors as Record<string, string[]>;
+      const firstField = Object.keys(fieldErrors)[0];
+      if (firstField && fieldErrors[firstField]?.[0]) {
+        message = `${firstField}: ${fieldErrors[firstField][0]}`;
+      }
+    }
+    if (res.status === 401) {
+      clearToken();
+      if (typeof window !== "undefined") {
+        window.location.href = "/login";
+      }
+    }
     throw new ApiError(message, code, res.status);
   }
 

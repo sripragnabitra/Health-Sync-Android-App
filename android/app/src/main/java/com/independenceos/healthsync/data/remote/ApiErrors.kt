@@ -19,6 +19,9 @@ private val errorJson = Json { ignoreUnknownKeys = true }
  * "HTTP 401".
  */
 fun Throwable.toUserMessage(): String {
+    if (this is java.io.IOException) {
+        return "Can't reach the server right now. Please check your connection and try again."
+    }
     if (this is HttpException) {
         val raw = response()?.errorBody()?.string()
         if (raw != null) {

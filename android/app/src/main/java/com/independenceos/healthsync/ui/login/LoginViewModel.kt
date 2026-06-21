@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 data class LoginUiState(
-    val email: String = "demo@independenceos.ai",
+    val email: String = "",
     val password: String = "",
     val isSignupMode: Boolean = false,
     val isSubmitting: Boolean = false,

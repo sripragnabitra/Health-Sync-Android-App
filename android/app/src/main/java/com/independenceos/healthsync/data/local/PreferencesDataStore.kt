@@ -47,6 +47,7 @@ class PreferencesDataStore(private val context: Context) {
         context.dataStore.edit {
             it.remove(Keys.AUTH_TOKEN)
             it.remove(Keys.USER_EMAIL)
+            it.remove(Keys.SERVER_DEVICE_ID)
         }
     }
 

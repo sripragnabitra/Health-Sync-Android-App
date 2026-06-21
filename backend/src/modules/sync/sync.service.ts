@@ -42,7 +42,7 @@ export async function ingestHealthRecords(
 ): Promise<IngestSummary> {
   const device = await prisma.device.findFirst({ where: { id: deviceId, userId } });
   if (!device) {
-    throw new AppError("NOT_FOUND", "Unknown device for this account — register the device before syncing");
+    throw new AppError("NOT_FOUND", "This device isn't registered to your account yet. Please sign out and sign in again to re-register it.");
   }
 
   const syncJob = await prisma.syncJob.create({
