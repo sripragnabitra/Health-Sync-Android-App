@@ -2,6 +2,10 @@
 
 Kotlin + Jetpack Compose + Health Connect + Retrofit. Minimum SDK 26, target/compile SDK 35.
 
+Sign in with the seeded demo account (`demo@independenceos.ai` /
+`DemoPass123!`) once you've run the backend's `npm run db:seed`, or create
+a new account from the dashboard's sign-up tab.
+
 ## Opening the project
 
 Open the `android/` folder in Android Studio (Ladybird or newer). Android

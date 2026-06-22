@@ -47,11 +47,6 @@ fun LoginScreen(
                 modifier = Modifier.fillMaxWidth(),
             )
 
-            if (!uiState.isSignupMode) {
-                Spacer(Modifier.height(8.dp))
-                Text("Seeded demo password: DemoPass123!", style = MaterialTheme.typography.bodyMedium)
-            }
-
             uiState.errorMessage?.let { message ->
                 Spacer(Modifier.height(12.dp))
                 Text(message, color = MaterialTheme.colorScheme.error, style = MaterialTheme.typography.bodyMedium)

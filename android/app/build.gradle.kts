@@ -27,7 +27,7 @@ android {
         // "https://healthsync-api-production.up.railway.app/api/v1/"
         // This is what lets the app work standalone on any phone, with no
         // WiFi/IP configuration needed by whoever installs it.
-        buildConfigField("String", "API_BASE_URL", "\"http://192.168.0.157:4000/api/v1/\"")
+        buildConfigField("String", "API_BASE_URL", "\"https://health-sync-android-app-production.up.railway.app/api/v1/\"")
     }
 
     buildFeatures {
