@@ -89,6 +89,27 @@ anywhere, and it works without WiFi-matching or IP configuration.
    uploaded, demonstrating the idempotent upsert rather than just
    asserting it works.
 
+## Live Demo
+
+### Web Dashboard
+https://health-sync-android-app.vercel.app
+
+### Backend Health Endpoint
+https://health-sync-android-app-production.up.railway.app/health
+
+### APK
+app-release.apk
+https://drive.google.com/file/d/1jSbZfIJflcHI4R5Pcd_lD5PHPBD_LmUv/view?usp=drive_link
+
+## Usage
+
+1. Install the APK.
+2. Sign in or create an account.
+3. Grant Health Connect permissions.
+4. Select a date range and tap **Sync Now**.
+5. Open the dashboard using the **Open Dashboard** button in the app (or visit the web URL above).
+6. View synced metrics and trends.
+
 ## What's actually verified vs. what needs your environment
 
 This was built in a sandboxed environment with no internet access and no

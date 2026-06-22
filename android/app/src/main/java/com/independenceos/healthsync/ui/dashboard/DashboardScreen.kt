@@ -17,6 +17,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import android.content.Intent
+import android.net.Uri
+import androidx.compose.ui.platform.LocalContext
 import com.independenceos.healthsync.data.remote.dto.SyncJobDto
 import com.independenceos.healthsync.domain.SyncOutcome
 
@@ -64,6 +67,12 @@ fun DashboardScreen(
                     onSyncClick = { viewModel.sync("MANUAL") },
                 )
             }
+
+            // ── View Web Dashboard ───────────────────────────────────────────
+            item {
+                DashboardCard()
+            }
+
 
             // ── Recent syncs ───────────────────────────────────────────────
             item {
@@ -183,6 +192,45 @@ private fun SyncStatusCard(uiState: DashboardUiState, onSyncClick: () -> Unit) {
                     else
                         "Sync Now  ·  ${uiState.selectedRange.label}"
                 )
+            }
+        }
+    }
+}
+// ── View Web Dashboard ───────────────────────────────────────────
+
+@Composable
+private fun DashboardCard() {
+    val context = LocalContext.current
+
+    Card(modifier = Modifier.fillMaxWidth()) {
+        Column(modifier = Modifier.padding(16.dp)) {
+
+            Text(
+                "View Dashboard",
+                style = MaterialTheme.typography.titleMedium
+            )
+
+            Spacer(Modifier.height(4.dp))
+
+            Text(
+                "Open the web dashboard to view your synced health reports and charts.",
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+
+            Spacer(Modifier.height(12.dp))
+
+            OutlinedButton(
+                onClick = {
+                    val intent = Intent(
+                        Intent.ACTION_VIEW,
+                        Uri.parse("https://health-sync-android-app.vercel.app")
+                    )
+                    context.startActivity(intent)
+                },
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text("Open Dashboard")
             }
         }
     }
