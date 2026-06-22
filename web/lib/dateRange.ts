@@ -76,4 +76,4 @@ export function buildDateRangeConfig(period: DateRangePeriod): DateRangeConfig {
   }
 }
 
-export const ALL_PERIODS: DateRangePeriod[] = ["yesterday", "last_week", "last_month"];
+export const ALL_PERIODS: DateRangePeriod[] = ["today", "yesterday", "last_week", "last_month"];

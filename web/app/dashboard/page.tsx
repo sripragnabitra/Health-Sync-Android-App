@@ -49,7 +49,6 @@ export default function DashboardPage() {
   const [loadError, setLoadError] = useState<string | null>(null);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [hasLoadedOnce, setHasLoadedOnce] = useState(false);
-
   // Trend chart state
   const [trendParam, setTrendParam] = useState<ParameterType>("STEPS");
   const [trendData, setTrendData] = useState<TrendResponse | null>(null);
