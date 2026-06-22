@@ -115,17 +115,18 @@ app-release.apk
 ## Android App
 
 ### Login Screen
-<img width="400" height="860" alt="image" src="https://github.com/user-attachments/assets/fe4caf2a-7d75-49be-b53d-d246c63312c2" />
+<img width="200" height="430" alt="image" src="https://github.com/user-attachments/assets/fe4caf2a-7d75-49be-b53d-d246c63312c2" />
 
 ### Grant Permissions
-<img width="400" height="860" alt="image" src="https://github.com/user-attachments/assets/91eaa85f-7fbc-45ee-ab40-54f642bb22f4" />
+<img width="200" height="430" alt="image" src="https://github.com/user-attachments/assets/91eaa85f-7fbc-45ee-ab40-54f642bb22f4" />
 
 ### Sync Dashboard
-<img width="400" height="860" alt="image" src="https://github.com/user-attachments/assets/aa68c428-669a-4137-b923-0c79734933c3" />
+<img width="200" height="430" alt="image" src="https://github.com/user-attachments/assets/aa68c428-669a-4137-b923-0c79734933c3" />
 
 ### Successful Sync + Open Dashboard
-<img width="400" height="860" alt="image" src="https://github.com/user-attachments/assets/01dfb830-8ca3-49a2-bf98-4134574d9d4a" />
+<img width="200" height="430" alt="image" src="https://github.com/user-attachments/assets/01dfb830-8ca3-49a2-bf98-4134574d9d4a" />
 
+##
 ## Web Dashboard
 
 ### Login Screen
@@ -139,7 +140,7 @@ app-release.apk
 
 <img width="762" height="278" alt="image" src="https://github.com/user-attachments/assets/79d55b37-4aae-40ef-abe1-c22e52f05e58" />
 
-
+##
 ## What's actually verified vs. what needs your environment
 
 This was built in a sandboxed environment with no internet access and no
