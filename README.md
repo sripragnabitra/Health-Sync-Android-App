@@ -110,6 +110,36 @@ https://drive.google.com/file/d/1jSbZfIJflcHI4R5Pcd_lD5PHPBD_LmUv/view?usp=drive
 5. Open the dashboard using the **Open Dashboard** button in the app (or visit the web URL above).
 6. View synced metrics and trends.
 
+# Screenshots
+
+## Android App
+
+### Login Screen
+![Login](screenshots/login.png)
+
+### Grant Permissions
+<img width="158" height="330" alt="Screenshot 2026-06-20 132615" src="https://github.com/user-attachments/assets/1acd7abf-2f80-4dc5-88ca-6f320373aa5b" />
+
+### Sync Dashboard
+![Dashboard](screenshots/dashboard.png)
+
+### Successful Sync + Open Dashboard
+![Sync Success](screenshots/sync_success.png)
+
+## Web Dashboard
+
+### Login Screen
+<img width="1274" height="648" alt="image" src="https://github.com/user-attachments/assets/e7f6a2d4-8bd5-4be7-80b6-fecb79770786" />
+
+### Dashboard Overview
+<img width="1277" height="650" alt="image" src="https://github.com/user-attachments/assets/d79b7f51-4ddb-47a0-8ceb-e15da07c3e99" />
+
+### Trend Charts
+<img width="759" height="273" alt="image" src="https://github.com/user-attachments/assets/a53773a4-1e63-434f-9a70-3759a0aaa006" />
+
+<img width="762" height="278" alt="image" src="https://github.com/user-attachments/assets/79d55b37-4aae-40ef-abe1-c22e52f05e58" />
+
+
 ## What's actually verified vs. what needs your environment
 
 This was built in a sandboxed environment with no internet access and no
