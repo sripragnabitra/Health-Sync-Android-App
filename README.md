@@ -99,7 +99,7 @@ https://health-sync-android-app-production.up.railway.app/health
 
 ### APK
 app-release.apk
-https://drive.google.com/file/d/1jSbZfIJflcHI4R5Pcd_lD5PHPBD_LmUv/view?usp=drive_link
+- [https://drive.google.com/file/d/1jSbZfIJflcHI4R5Pcd_lD5PHPBD_LmUv/view?usp=drive_link](https://drive.google.com/file/d/18t1fC-ob1UeapGkCBAWkr_Rl0s6wlz6r/view)
 
 ## Usage
 
@@ -115,24 +115,24 @@ https://drive.google.com/file/d/1jSbZfIJflcHI4R5Pcd_lD5PHPBD_LmUv/view?usp=drive
 ## Android App
 
 ### Login Screen
-![Login](screenshots/login.png)
+<img width="400" height="860" alt="image" src="https://github.com/user-attachments/assets/fe4caf2a-7d75-49be-b53d-d246c63312c2" />
 
 ### Grant Permissions
-<img width="158" height="330" alt="Screenshot 2026-06-20 132615" src="https://github.com/user-attachments/assets/1acd7abf-2f80-4dc5-88ca-6f320373aa5b" />
+<img width="400" height="860" alt="image" src="https://github.com/user-attachments/assets/91eaa85f-7fbc-45ee-ab40-54f642bb22f4" />
 
 ### Sync Dashboard
-![Dashboard](screenshots/dashboard.png)
+<img width="400" height="860" alt="image" src="https://github.com/user-attachments/assets/aa68c428-669a-4137-b923-0c79734933c3" />
 
 ### Successful Sync + Open Dashboard
-![Sync Success](screenshots/sync_success.png)
+<img width="400" height="860" alt="image" src="https://github.com/user-attachments/assets/01dfb830-8ca3-49a2-bf98-4134574d9d4a" />
 
 ## Web Dashboard
 
 ### Login Screen
-<img width="1274" height="648" alt="image" src="https://github.com/user-attachments/assets/e7f6a2d4-8bd5-4be7-80b6-fecb79770786" />
+<img width="1200" height="600" alt="image" src="https://github.com/user-attachments/assets/e7f6a2d4-8bd5-4be7-80b6-fecb79770786" />
 
 ### Dashboard Overview
-<img width="1277" height="650" alt="image" src="https://github.com/user-attachments/assets/d79b7f51-4ddb-47a0-8ceb-e15da07c3e99" />
+<img width="1200" height="600" alt="image" src="https://github.com/user-attachments/assets/d79b7f51-4ddb-47a0-8ceb-e15da07c3e99" />
 
 ### Trend Charts
 <img width="759" height="273" alt="image" src="https://github.com/user-attachments/assets/a53773a4-1e63-434f-9a70-3759a0aaa006" />
